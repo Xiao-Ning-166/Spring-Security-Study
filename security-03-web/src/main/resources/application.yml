@@ -1,0 +1,24 @@
+server:
+  port: 10013
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_security?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  # thymeleaf相关配置
+  thymeleaf:
+    cache: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+
+mybatis:
+  mapper-location: classpath:mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

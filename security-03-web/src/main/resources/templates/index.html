@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h1>系统首页</h1>
+
+<ul>
+    <!-- principal相当于UserDetails信息 -->
+    <li>
+        登录账号:<span sec:authentication="principal.username"></span>
+    </li>
+    <li>
+        登录密码:<span sec:authentication="principal.password"></span>
+    </li>
+    <li>
+        账号过期:<span sec:authentication="principal.accountNonExpired"></span>
+    </li>
+    <li>
+        账号锁定:<span sec:authentication="principal.accountNonLocked"></span>
+    </li>
+    <li>
+        凭证过期:<span sec:authentication="principal.credentialsNonExpired"></span>
+    </li>
+    <li>
+        账号启用:<span sec:authentication="principal.enabled"></span>
+    </li>
+    <li>
+        凭证：<span sec:authentication="credentials"></span>
+    </li>
+    <li>
+        权限和角色：<span sec:authentication="authorities"></span>
+    </li>
+    <!-- WebAuthenticationDetails实例 -->
+    <li>
+        客户端地址：<span sec:authentication="details.remoteAddress"></span>
+    </li>
+    <li>
+        sessionId：<span sec:authentication="details.sessionId"></span>
+    </li>
+</ul>
+
+<p>
+    <a th:href="@{/doLogout}">注销</a>
+</p>
+</body>
+</html>
