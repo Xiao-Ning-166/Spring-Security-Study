@@ -1,5 +1,7 @@
 package com.example.security;
 
+import cn.hutool.core.util.StrUtil;
+import com.example.security.exception.VerifyCodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,6 +26,18 @@ import java.util.Map;
 @Slf4j
 public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    public static final String FORM_VERIFY_CODE = "verifyCode";
+
+    public String verifyCodeParameter = FORM_VERIFY_CODE;
+
+    public String getVerifyCodeParameter() {
+        return verifyCodeParameter;
+    }
+
+    public void setVerifyCodeParameter(String verifyCode) {
+        this.verifyCodeParameter = verifyCode;
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         log.info("=================使用自定义的UsernamePasswordAuthenticationFilter================");
@@ -33,9 +47,20 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         }
         // 2、判断请求体类型是否是json
         if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
-            // 3、提取 用户名、 密码
+            // 3、检查验证码、提取 用户名、 密码
             try {
                 Map<String, String> map = new ObjectMapper().readValue(request.getInputStream(), Map.class);
+
+                // 1、获取请求中的验证码
+                String verifyCode = map.get(this.getVerifyCodeParameter());
+                // 2、获取正确的验证码
+                String realVerifyCode = (String) request.getSession().getAttribute("realVerifyCode");
+                // 3、检查验证码是否正确
+                if (StrUtil.isBlank(verifyCode) || StrUtil.isEmpty(realVerifyCode) || !verifyCode.equalsIgnoreCase(realVerifyCode)) {
+                    throw new VerifyCodeException("验证码不正确！！！");
+                }
+
+                // 、获取请求中用户名、密码
                 String username = map.get(this.getUsernameParameter());
                 String password = map.get(this.getPasswordParameter());
 

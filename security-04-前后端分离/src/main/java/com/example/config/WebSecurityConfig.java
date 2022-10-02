@@ -142,6 +142,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
+            // 放行获取验证码的请求
+            .antMatchers("/verifyCode").permitAll()
             .anyRequest().authenticated();
 
         http.csrf().disable();
