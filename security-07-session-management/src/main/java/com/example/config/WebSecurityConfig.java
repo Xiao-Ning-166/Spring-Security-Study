@@ -47,7 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 设置响应类型
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.getWriter().println(json);
-            });
+            })
+            // 达到会话最大值时，禁止继续登录
+            .maxSessionsPreventsLogin(true);
 
         http.authorizeRequests()
             .anyRequest().authenticated();
