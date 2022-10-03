@@ -17,4 +17,13 @@ public interface UserMapper {
      * @return
      */
     SysUser loadUserByUsername(String username);
+
+    /**
+     * 更新用户密码
+     *
+     * @param username
+     * @param newPassword
+     * @return
+     */
+    Integer updatePassword(String username, String newPassword);
 }

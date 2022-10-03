@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.security.MyUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,16 +25,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 第二种加密方式。全局使用固定的密码加密算法
      * @return
      */
-    @Bean
-    public PasswordEncoder bCryptPasswordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }
+    // @Bean
+    // public PasswordEncoder bCryptPasswordEncoder() {
+    //     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    //     return bCryptPasswordEncoder;
+    // }
 
 
     @Bean
     public UserDetailsService userDetailsManager() {
-        InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
+        // InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
         /**
          * 第一种加密方式：DelegatingPasswordEncoder进行委托代理，可以兼容多种加密方式的密码
          */
@@ -43,8 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * 第二种密码加密使用方式
          */
-        inMemoryUserDetailsManager.createUser(User.withUsername("root").password("$2a$10$ru0tbxVFazpCugyAUB36i.tklGW.OFzAqsaPj048E.o.hN2Mrw7d6").roles("admin").build());
-        return inMemoryUserDetailsManager;
+        // inMemoryUserDetailsManager.createUser(User.withUsername("root").password("$2a$10$ru0tbxVFazpCugyAUB36i.tklGW.OFzAqsaPj048E.o.hN2Mrw7d6").roles("admin").build());
+        // return inMemoryUserDetailsManager;
+
+        // 使用数据库中的用户名密码信息
+        MyUserDetailService myUserDetailService = new MyUserDetailService();
+        return myUserDetailService;
     }
 
     /**

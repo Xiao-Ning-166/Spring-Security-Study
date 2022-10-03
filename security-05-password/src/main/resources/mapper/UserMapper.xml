@@ -40,4 +40,13 @@
             t1.username = #{username}
     </select>
 
+    <update id="updatePassword">
+        UPDATE
+            user
+        SET
+            password = #{newPassword}
+        WHERE
+            username = #{username}
+    </update>
+
 </mapper>
